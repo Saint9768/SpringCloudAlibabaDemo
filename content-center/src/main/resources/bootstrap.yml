@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        # 此处的nacos用于配置管理
+        server-addr: 106.15.139.143:8848
+        file-extension: yaml
+        shared-configs:
+          - data-id: common1.yaml
+            refresh: true
+          - data-id: common2.yaml
+            refresh: true
+  application:
+    name: content-center
+  profiles:
+    active: test

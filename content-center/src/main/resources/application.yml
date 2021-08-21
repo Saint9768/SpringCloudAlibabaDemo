@@ -1,0 +1,147 @@
+spring:
+  application:
+    name: content-center
+  datasource:
+    url: jdbc:mysql://106.15.139.143:3306/content_center
+    hikari:
+      username: root
+      password: zn970816
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      max-lifetime: 600000
+  cloud:
+    nacos:
+      discovery:
+        # 指定Nacos的地址,用于服务发现
+        server-addr: 106.15.139.143:8848
+        # 需要现在nacos控制台创建，然后将命名空间ID填入
+#        namespace: 366e3d9c-b359-4176-8c8f-f1eeb2c1dcee
+        # 集群名称
+        cluster-name: NJ
+        metadata:
+          v: 1.0
+          target-v: 1.0
+    sentinel:
+      transport:
+        # 指定sentinel控制台的地址
+        dashboard: localhost:9000
+      filter:
+        # 打开/关掉对Spring MVC端点的保护
+        enabled: false
+      datasource:
+        # 名称随意
+        flow:
+          nacos:
+            server-addr: 106.15.139.143:8848
+            dataId: ${spring.application.name}-flow-rules
+            groupId: SENTINEL_GROUP
+            # 规则类型，取值见：
+            # org.springframework.cloud.alibaba.sentinel.datasource.RuleType
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: 106.15.139.143:8848
+            dataId: ${spring.application.name}-degrade-rules
+            groupId: SENTINEL_GROUP
+            rule-type: degrade
+        system:
+          nacos:
+            server-addr: 106.15.139.143:8848
+            dataId: ${spring.application.name}-system-rules
+            groupId: SENTINEL_GROUP
+            rule-type: system
+        authority:
+          nacos:
+            server-addr: 106.15.139.143:8848
+            dataId: ${spring.application.name}-authority-rules
+            groupId: SENTINEL_GROUP
+            rule-type: authority
+        param-flow:
+          nacos:
+            server-addr: 106.15.139.143:8848
+            dataId: ${spring.application.name}-param-flow-rules
+            groupId: SENTINEL_GROUP
+            rule-type: param-flow
+    # spring cloud stream 配置
+#    stream:
+#      rocketmq:
+#        binder:
+#          name-server: 106.15.139.143:9876
+#        bindings:
+#          output:
+#            producer:
+#              # 实现stream的事务
+#              transactional: true
+#              group: tx-producer-test
+#      bindings:
+#        output:
+#          # 用来指定topic
+#          destination: add-bonus
+        # my-output与MySource类中@Output中的属性一致
+#        my-output:
+#          destination: stream-my-topic
+  main:
+    allow-bean-definition-overriding: true
+server:
+  port: 28081
+# 为XX微服务指定负载均衡策略
+#user-center:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
+ribbon:
+  eager-load:
+    # 开启饥饿加载
+    enabled: false
+    # 开启饥饿加载的微服务列表
+    clients: user-center
+# 配置feign的日志级别
+logging:
+  level:
+    com.saint.contentcenter.feignclient.UserCenterFeignClient: debug
+    # 避免Spring cloud stream中疯狂打印nacos的日志
+    com.alibaba.nacos: error
+feign:
+  client:
+    config:
+      # 想要调用的微服务名称
+      default:
+        loggerLevel: basic
+      # 设置全局Feign拦截器
+      rquestInterceptors:
+        - com.saint.contentcenter.feignclient.interceptor.TokenRelayRequestInterceptor
+  # 让feign使用Apache httpclient做请求
+  httpclient:
+    enabled: true
+    # feign的最大连接数
+    max-connections: 200
+    # feign单个路径的最大连接数
+    max-connections-per-route: 50
+  # 给feign开启sentinel
+  sentinel:
+    enabled: true
+# 暴露actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  # 开启健康检查
+  endpoint:
+    health:
+      show-details: always
+resttemplate:
+  sentinel:
+    # 关闭@SentinelRestTemplate注解
+    enabled: false
+# RocketMQTemplate使用的
+rocketmq:
+  name-server: 106.15.139.143:9876
+  producer:
+    # 小坑，必须指定group
+    group: test-group
+jwt:
+  secret: saintaaaaa
+  # 有效期，单位秒，默认两周
+  expire-time-in-second: 1209600
+
+my:
+  configuration: test-saint

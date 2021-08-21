@@ -1,0 +1,39 @@
+server:
+  port: 8040
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 106.15.139.143:8848
+    gateway:
+      discovery:
+        locator:
+          # 让gateway通过服务发现组件找到其他的微服务
+          enabled: true
+      routes:
+        - id: user_route
+          uri: lb://user-center
+          predicates:
+            - Path=/usres/**
+            # 当且仅当请求时的时间Between配置的时间时，才会转发到用户微服务
+            - TimeBetween=上午0:00, 下午11:59
+#          filters:
+#            - PreLog=a,b
+        - id: content_route
+          uri: lb://content-center
+          predicates:
+            - Path=/shares/**,/admin/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+logging:
+  level:
+    org.springframework.cloud.gateway: trace

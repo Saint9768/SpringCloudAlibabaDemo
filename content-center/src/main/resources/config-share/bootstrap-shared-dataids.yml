@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    nacos:
+      config:
+        # 共享配置的DataId，多个使用,分隔
+        # 越靠后，优先级越高；common2.yml > common1.yaml
+        # .yaml后缀不能少，只支持yaml/properties
+        shared-dataids: common1.yaml,common2.yaml
+        # 哪些共享配置支持动态刷新，多个使用,分隔
+        refreshable-dataids: common1.yaml
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+  application:
+    name: content-center
+  profiles:
+    active: dev
