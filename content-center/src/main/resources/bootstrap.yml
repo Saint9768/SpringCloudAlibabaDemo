@@ -3,7 +3,7 @@ spring:
     nacos:
       config:
         # 此处的nacos用于配置管理
-        server-addr: 106.15.139.143:8848
+        server-addr: 127.0.0.1:8848
         file-extension: yaml
         shared-configs:
           - data-id: common1.yaml

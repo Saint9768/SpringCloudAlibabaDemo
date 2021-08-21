@@ -1,16 +1,6 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : aliyun
- Source Server Type    : MySQL
- Source Server Version : 50734
- Source Host           : 106.15.139.143:3306
- Source Schema         : content_center
-
- Target Server Type    : MySQL
- Target Server Version : 50734
- File Encoding         : 65001
-
  Date: 21/08/2021 09:49:18
 */
 

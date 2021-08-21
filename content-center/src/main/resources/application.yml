@@ -2,17 +2,17 @@ spring:
   application:
     name: content-center
   datasource:
-    url: jdbc:mysql://106.15.139.143:3306/content_center
+    url: jdbc:mysql://127.0.0.1:3306/content_center
     hikari:
-      username: root
-      password: zn970816
+      username: xxx
+      password: xxx
       driver-class-name: com.mysql.cj.jdbc.Driver
       max-lifetime: 600000
   cloud:
     nacos:
       discovery:
         # 指定Nacos的地址,用于服务发现
-        server-addr: 106.15.139.143:8848
+        server-addr: 127.0.0.1:8848
         # 需要现在nacos控制台创建，然后将命名空间ID填入
 #        namespace: 366e3d9c-b359-4176-8c8f-f1eeb2c1dcee
         # 集群名称
@@ -29,9 +29,9 @@ spring:
         enabled: false
       datasource:
         # 名称随意
-        flow:
+        flow:https://www.processon.com/i/5e9533601e085369d0c3b610
           nacos:
-            server-addr: 106.15.139.143:8848
+            server-addr: 127.0.0.1:8848
             dataId: ${spring.application.name}-flow-rules
             groupId: SENTINEL_GROUP
             # 规则类型，取值见：
@@ -39,25 +39,25 @@ spring:
             rule-type: flow
         degrade:
           nacos:
-            server-addr: 106.15.139.143:8848
+            server-addr: 127.0.0.1:8848
             dataId: ${spring.application.name}-degrade-rules
             groupId: SENTINEL_GROUP
             rule-type: degrade
         system:
           nacos:
-            server-addr: 106.15.139.143:8848
+            server-addr: 127.0.0.1:8848
             dataId: ${spring.application.name}-system-rules
             groupId: SENTINEL_GROUP
             rule-type: system
         authority:
           nacos:
-            server-addr: 106.15.139.143:8848
+            server-addr: 127.0.0.1:8848
             dataId: ${spring.application.name}-authority-rules
             groupId: SENTINEL_GROUP
             rule-type: authority
         param-flow:
           nacos:
-            server-addr: 106.15.139.143:8848
+            server-addr: 127.0.0.1:8848
             dataId: ${spring.application.name}-param-flow-rules
             groupId: SENTINEL_GROUP
             rule-type: param-flow
@@ -65,7 +65,7 @@ spring:
 #    stream:
 #      rocketmq:
 #        binder:
-#          name-server: 106.15.139.143:9876
+#          name-server: 127.0.0.1:9876
 #        bindings:
 #          output:
 #            producer:
@@ -134,7 +134,7 @@ resttemplate:
     enabled: false
 # RocketMQTemplate使用的
 rocketmq:
-  name-server: 106.15.139.143:9876
+  name-server: 127.0.0.1:9876
   producer:
     # 小坑，必须指定group
     group: test-group
